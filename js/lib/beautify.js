@@ -431,12 +431,21 @@
             print_token_space_before();
             output_space_before_token = false;
             output.push(printable_token);
+            if (token_text === ']' || token_text === '(' || token_text == "[" || token_text == ")")
+                print_indentation();
+            if (token_text === 'function') {
+                print_indentation();
+            }
+        }
+
+        function print_indentation() {
+            console.log('indentation for ' + token_text + ': ' + flags.indentation_level);
         }
 
         function indent() {
             flags.indentation_level += 1;
         }
-        
+
         function deindent() {
             flags.indentation_level -= 1;
         }
@@ -980,7 +989,7 @@
 
             print_token();
             if (opt.space_in_paren) {
-                    output_space_before_token = true;
+                output_space_before_token = true;
             }
 
             // In all cases, if we newline while inside an expression it should be indented.
@@ -998,7 +1007,7 @@
                 print_newline();
             }
             if (opt.space_in_paren) {
-                    output_space_before_token = true;
+                output_space_before_token = true;
             }
             if (token_text === ']' && opt.keep_array_indentation) {
                 print_token();
@@ -1160,6 +1169,11 @@
                     // (function
                 } else {
                     print_newline();
+                }
+
+                // handle the special case for require.js's define function: define([], function () {...});
+                if (flags.last_word == 'define' && flags.last_text == ',') {
+                    deindent();
                 }
 
                 print_token();
