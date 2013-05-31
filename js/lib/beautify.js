@@ -1049,6 +1049,9 @@
                         } else {
                             print_newline(); // [a, b, c, {
                         }
+                    } else if (flags.last_text === '(') {
+                        // ({ should not indent twice
+                        deindent();
                     }
                 }
             }
@@ -1079,6 +1082,10 @@
 
                     } else {
                         print_newline();
+                    }
+                    // ending }); should be deindented.
+                    if (is_next(')')) {
+                        deindent();
                     }
                 }
             }
