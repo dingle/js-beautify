@@ -431,11 +431,6 @@
             print_token_space_before();
             output_space_before_token = false;
             output.push(printable_token);
-            if (token_text === ']' || token_text === '(' || token_text == "[" || token_text == ")")
-                print_indentation();
-            if (token_text === 'function') {
-                print_indentation();
-            }
         }
 
         function print_indentation() {
